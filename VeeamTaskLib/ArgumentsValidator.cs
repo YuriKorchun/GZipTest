@@ -64,7 +64,7 @@ namespace VeeamTaskLib {
             }
 
             if (destinationDriveInfo.TotalFreeSpace < sourceFileInfo.Length) {
-                return Result.Fail<ValidArguments>($"There are no enough free space! Needs {String.Format(sourceFileInfo.Length,"000,000,000,000")} but have got {destinationDriveInfo.TotalFreeSpace}");
+                return Result.Fail<ValidArguments>($"There are no enough free space! Needs bytes: {String.Format("{0:n0}", sourceFileInfo.Length)} but have got {String.Format("{0:n0}", destinationDriveInfo.TotalFreeSpace)}");
             }
 
             if (File.Exists(destinationFileName)) {
