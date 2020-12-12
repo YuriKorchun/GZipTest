@@ -9,7 +9,6 @@ namespace VeeamTaskLib {
     public partial class FileProcessor {
 
         private const int _marker = 0x11111111;
-        private const int blockHeaderSize = sizeof(int) * 3;
         private int _defaultUncompressedBlockSize;
         private int _processorCount;
 
@@ -113,6 +112,7 @@ namespace VeeamTaskLib {
                                 if (chunkManager.Status.IsFailure) {
                                     return chunkManager.Status;
                                 }
+                                chunkManager.RemoveWrittenChunks();
                             }
                             while (chunkManager.StartUnstartedChunksAndCountRemained() > 0) {
                                 Thread.Sleep(10);
@@ -144,10 +144,8 @@ namespace VeeamTaskLib {
             public int TotalBlockCount { get; private set; }
             public int MaxBlockSize { get; private set; }
             private int _currentBlockCount;
-            private int _currentBlockSize;
             private int _offset = 0;
-
-
+            private const int blockHeaderSize = sizeof(int) * 3;
 
             public int CurrentBlockCounter { get; private set; }
             public CompressedReader(string compressedFileName, int marker) {
@@ -191,6 +189,9 @@ namespace VeeamTaskLib {
                     return Result.Fail<ReadBlock>(_nonValidArchiveErrorMessage);
                 }
                 readBlock.BlockIndex = _inputBinaryReader.ReadInt32();
+                if (readBlock.BlockIndex != _currentBlockCount) {
+                    return Result.Fail<ReadBlock>(_nonValidArchiveErrorMessage);
+                }
                 readBlock.ActualReadSize = _inputBinaryReader.ReadInt32();
                 readBlock.ReadBlockData = _inputBinaryReader.ReadBytes(readBlock.ActualReadSize);
                 _currentBlockCount++;
@@ -226,6 +227,7 @@ namespace VeeamTaskLib {
                                 if (chunkManager.Status.IsFailure) {
                                     return chunkManager.Status;
                                 }
+                                chunkManager.RemoveWrittenChunks();
                             }
                             while (chunkManager.StartUnstartedChunksAndCountRemained() > 0) {
                                 Thread.Sleep(10);

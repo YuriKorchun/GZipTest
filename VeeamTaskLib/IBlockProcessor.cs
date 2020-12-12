@@ -12,5 +12,7 @@ namespace VeeamTaskLib {
 
         byte[] ProcessedBlockData { get;  }
 
+        bool IsWritten { get; set; }
+
     }
 }

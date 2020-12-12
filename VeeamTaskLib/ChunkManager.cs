@@ -58,6 +58,10 @@ namespace VeeamTaskLib {
             return _chunkList.FindAll(p => p.ChunkThread.ThreadState == ThreadState.Unstarted).Count;
         }
 
+        public void RemoveWrittenChunks() {
+            _chunkList.RemoveAll(p => p.ChunkThread.ThreadState != ThreadState.Running && p.Block.IsWritten);
+        }
+
         private int RunningChunkCount(List<IChunk> threadQueue) {
             return threadQueue.FindAll(p => p.ChunkThread.ThreadState == ThreadState.Running).Count;
         }

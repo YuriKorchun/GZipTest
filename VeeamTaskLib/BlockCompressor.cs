@@ -11,8 +11,8 @@ namespace VeeamTaskLib {
         public byte[] SourceBlockData { get; private set; }
         public int ProcessedBlockSize { get; private set; }
         public byte[] ProcessedBlockData { get; private set; }
-
         private BlockWriter _writer;
+        public bool IsWritten { get; set; }
 
         public BlockCompressor(BlockWriter writer, int blockIndex, int uncompressedBlockSize, byte[] uncompressedBlockData) {
             _writer = writer;

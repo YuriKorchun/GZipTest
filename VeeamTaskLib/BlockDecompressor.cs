@@ -11,10 +11,9 @@ namespace VeeamTaskLib {
         public byte[] SourceBlockData { get; private set; }
         public int ProcessedBlockSize { get; private set; }
         public byte[] ProcessedBlockData { get; private set; }
-
         private int _defaultBlockSize;
-
         private BlockWriter _writer;
+        public bool IsWritten { get; set; }
 
         public BlockDecompressor(BlockWriter writer, int blockIndex, int compressedBlockSize, byte[] compressedBlockData, int defaultUncompressedBlockSize) {
             _writer = writer;

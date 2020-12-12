@@ -78,6 +78,7 @@ namespace VeeamTaskLib {
                 }
             }
             _binaryWriter.Write(nextBlock.ProcessedBlockData, 0, nextBlock.ProcessedBlockSize);
+            nextBlock.IsWritten = true;
             return Result.Ok();
         }
 
